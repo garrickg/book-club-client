@@ -6,7 +6,6 @@ const AllBooksQuery = gql`
 query {
     allBooks {
       title
-      author
       id
     }
   }

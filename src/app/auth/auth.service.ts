@@ -36,27 +36,7 @@ const loginMutation = gql`
 export class AuthService {
 
   constructor(private router: Router, private apollo: Apollo) { }
-
-  registerUser (username: string, email: string, password: string) {
-    this.apollo.mutate({
-      mutation: registerMutation,
-      variables: {
-        username,
-        email,
-        password,
-      },
-    }).subscribe(({ data }) => {
-      const { ok, token, refreshToken, errors } = data.register;
-      if (ok) {
-        localStorage.setItem('token', token);
-        localStorage.setItem('refreshToken', refreshToken);
-      }
-      this.router.navigate(['/']);
-    },(error) => {
-      console.log('there was an error sending the query', error);
-    });
-  }
-
+  
   isAuthenticated () {
     const token = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refreshToken');
@@ -73,11 +53,33 @@ export class AuthService {
     const token = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refreshToken');
     try {
-      const response = decode(token);
-      return response.user;
+      if (this.isAuthenticated()) {
+        return decode(token);
+      }
     } catch (err) {
-      return {};
+      return null;
     }
+  }
+
+  registerUser (username: string, email: string, password: string) {
+    this.apollo.mutate({
+      mutation: registerMutation,
+      variables: {
+        username,
+        email,
+        password,
+      },
+    }).subscribe(({ data }) => {
+      const { ok, token, refreshToken, errors } = data.register;
+      if (ok) {
+        this.setTokens(token, refreshToken).then(() => {
+          this.router.navigate(['/']);
+        });
+      }
+      this.router.navigate(['/']);
+    },(error) => {
+      console.log('there was an error sending the registration request', error);
+    });
   }
 
   login (email: string, password: string) {
@@ -89,13 +91,21 @@ export class AuthService {
       },
     }).subscribe(({ data }) => {
       const { ok, token, refreshToken, errors } = data.login;
-      if(ok){
-        localStorage.setItem('token', token);
-        localStorage.setItem('refreshToken', refreshToken);
+      if (ok) {
+        this.setTokens(token, refreshToken).then(() => {
+          this.router.navigate(['/']);
+        });
       }
-      this.router.navigate(['/']);
     },(error) => {
-      console.log('there was an error sending the query', error);
+      console.log('there was an error sending the login request', error);
+    });
+  }
+
+  setTokens (token, refreshToken) {
+    return new Promise(function(resolve, reject) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('refreshToken', refreshToken);
+      resolve();
     });
   }
 

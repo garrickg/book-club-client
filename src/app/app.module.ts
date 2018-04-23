@@ -19,6 +19,7 @@ import { BooksComponent } from './books/books.component';
 import { BookDetailComponent } from './books/book-detail/book-detail.component';
 import { AuthService } from './auth/auth.service';
 import { HeaderComponent } from './header/header.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { HeaderComponent } from './header/header.component';
     BooksComponent,
     BookDetailComponent,
     HeaderComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

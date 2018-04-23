@@ -6,16 +6,16 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" routerLink="/">All Books</a>
+        <a class="nav-link" routerLink="/books" routerLinkActive="active">All Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/">My Books</a>
+        <a class="nav-link" routerLink="/user/books" routerLinkActive="active">My Books</a>
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
         <ng-template [ngIf]="!authService.isAuthenticated()">
-            <li class="nav-item"><a class="nav-link" routerLink="/register">Register</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink="/login">Login</a></li>   
+            <li class="nav-item"><a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a></li>   
         </ng-template>
         <li class="nav-item" ngbDropdown *ngIf="authService.isAuthenticated()">
           <a class="nav-link" ngbDropdownToggle role="button" style="cursor: pointer">{{ user.username }} <span class="caret"></span></a>

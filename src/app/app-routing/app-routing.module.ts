@@ -1,3 +1,4 @@
+import { HomeComponent } from './../home/home.component';
 import { BookRemoveComponent } from './../books/book-remove/book-remove.component';
 import { BookDetailComponent } from './../books/book-detail/book-detail.component';
 import { BookAddComponent } from './../books/book-add/book-add.component';
@@ -10,10 +11,10 @@ import { LoginComponent } from '../auth/login/login.component';
 import { BooksComponent } from '../books/books.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
-  { path: 'books', component: BookListComponent, children: [
+  { path: 'books', component: BooksComponent, children: [
     // { path: '', component: BookListComponent },
     { path: 'new', component: BookAddComponent },
     { path: ':id', component: BookDetailComponent },
