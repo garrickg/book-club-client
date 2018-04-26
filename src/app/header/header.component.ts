@@ -14,19 +14,16 @@ export class HeaderComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    const response = this.authService.getUser();
-    if (response) {
-      this.user = response.user;
-    } else {
-      this.user = {
-        userId: null,
-        username: null,
-      }
-    }
+    this.authService.getUserObservable()
+      .subscribe(user => {
+        this.user = user;
+      });
+    this.authService.emitUser(null);
   }
 
   onLogout() {
     this.authService.logout();
+    this.user = null;
   }
 
 }

@@ -17,11 +17,11 @@
             <li class="nav-item"><a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a></li>
             <li class="nav-item"><a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a></li>   
         </ng-template>
-        <li class="nav-item" ngbDropdown *ngIf="authService.isAuthenticated()">
+        <li class="nav-item" ngbDropdown *ngIf="user">
           <a class="nav-link" ngbDropdownToggle role="button" style="cursor: pointer">{{ user.username }} <span class="caret"></span></a>
           <div ngbDropdownMenu aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" style="cursor: pointer" >My Info</a>
-            <a class="dropdown-item" style="cursor: pointer" >My Books</a>
+            <a class="dropdown-item" style="cursor: pointer" routerLink="/user">My Info</a>
+            <a class="dropdown-item" style="cursor: pointer" routerLink="/user/books">My Books</a>
           </div>
         </li>
         <li class="nav-item"><a class="nav-link" style="cursor: pointer;" (click)="onLogout()" *ngIf="authService.isAuthenticated()">Logout</a></li>

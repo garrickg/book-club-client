@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { User } from './../shared/user.model';
+import { Injectable, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import * as decode from 'jwt-decode';
+import { Subject } from 'rxjs/Subject';
 
 const registerMutation = gql`
   mutation ($username: String!, $email: String!, $password: String!) {
@@ -14,6 +16,10 @@ const registerMutation = gql`
       }
       token
       refreshToken
+      user {
+        username
+        id
+      }
     }
   }
 `;
@@ -28,12 +34,17 @@ const loginMutation = gql`
       }
       token
       refreshToken
+      user {
+        username
+        id
+      }
     }
   }
 `;
 
 @Injectable()
 export class AuthService {
+  user = new Subject<User>();
 
   constructor(private router: Router, private apollo: Apollo) { }
   
@@ -49,16 +60,16 @@ export class AuthService {
     return true;
   }
 
-  getUser () {
-    const token = localStorage.getItem('token');
-    const refreshToken = localStorage.getItem('refreshToken');
-    try {
-      if (this.isAuthenticated()) {
-        return decode(token);
-      }
-    } catch (err) {
-      return null;
+  getUserObservable() {
+    return this.user.asObservable();
+  }
+
+  emitUser(user: User) {
+    if (!user) {
+      const token = localStorage.getItem('token');
+      user = decode(token)['user'];
     }
+    this.user.next(user);
   }
 
   registerUser (username: string, email: string, password: string) {
@@ -70,8 +81,9 @@ export class AuthService {
         password,
       },
     }).subscribe(({ data }) => {
-      const { ok, token, refreshToken, errors } = data.register;
+      const { ok, token, refreshToken, errors, user } = data.register;
       if (ok) {
+        this.emitUser(user);
         this.setTokens(token, refreshToken).then(() => {
           this.router.navigate(['/']);
         });
@@ -90,8 +102,9 @@ export class AuthService {
         password,
       },
     }).subscribe(({ data }) => {
-      const { ok, token, refreshToken, errors } = data.login;
+      const { ok, token, refreshToken, errors, user } = data.login;;
       if (ok) {
+        this.emitUser(user);
         this.setTokens(token, refreshToken).then(() => {
           this.router.navigate(['/']);
         });
@@ -110,8 +123,10 @@ export class AuthService {
   }
 
   logout () {
+    this.user.next(null);
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
+    this.apollo.getClient().resetStore();
     this.router.navigate(['/']);
   }
 }
