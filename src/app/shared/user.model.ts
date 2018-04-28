@@ -1,3 +1,3 @@
 export class User {
-    constructor(public username: string, public userId: string) {}
+    constructor(public username: string, public id: string) {}
 }

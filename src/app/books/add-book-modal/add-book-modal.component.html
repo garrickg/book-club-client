@@ -1,0 +1,26 @@
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Add New Book</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form-inline" (ngSubmit)="getBooks(f)" #f="ngForm">
+      <input class="form-control mr-sm-2" type="search" id="query" name="query" placeholder="Search" aria-label="Search" ngModel>
+      <button class="btn btn btn-info my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <ul class="list-group" *ngIf='searchComplete'>
+        <li class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let book of bookSearchResults; let i = index" [id]="i" (click)="onBookSelect(i)" [class.active]="selectedBookIndex === i">
+          <h5 class="mb-1">{{ book.volumeInfo.title }}</h5>
+          <p class="mb-1">by {{ book.volumeInfo.authors[0] }}</p>
+        </li>
+    </ul>      
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Cancel</button>
+    <button type="button" class="btn btn-outline-success" (click)="onSubmit()" [disabled]="!selectedBook">Add Book</button>
+  </div>
+</ng-template>
+  
+<button class="btn btn-primary" (click)="open(content)">Add New Book</button>

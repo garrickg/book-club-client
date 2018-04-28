@@ -9,7 +9,7 @@
         <a class="nav-link" routerLink="/books" routerLinkActive="active">All Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/user/books" routerLinkActive="active">My Books</a>
+        <a class="nav-link" routerLink="/user/books" routerLinkActive="active" *ngIf="user">My Books</a>
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">

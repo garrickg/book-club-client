@@ -19,12 +19,12 @@ export class GraphQLModule {
     const uri = 'http://localhost:8080/graphql';
     const http = httpLink.create({ uri });
 
-  //   const middlewareLink = setContext(() => ({
-  //     headers: {
-  //       'x-token': localStorage.getItem('token') || null,
-  //       'x-refresh-token': localStorage.getItem('refreshToken') || null,
-  //     },
-  //   }));
+    const middlewareLink = setContext(() => ({
+      headers: {
+        'x-token': localStorage.getItem('token') || null,
+        'x-refresh-token': localStorage.getItem('refreshToken') || null,
+      },
+    }));
 
   // const afterwareLink = new ApolloLink((operation, forward) =>
   //   forward(operation).map((response) => {
@@ -45,10 +45,10 @@ export class GraphQLModule {
   //     return response;
   // }));
 
-  // const linkWithMiddleware = from([middlewareLink, afterwareLink, http]);
+  const linkWithMiddleware = from([middlewareLink, http]);
 
     apollo.create({
-      link: http,
+      link: linkWithMiddleware,
       cache: new InMemoryCache()
     });
   }

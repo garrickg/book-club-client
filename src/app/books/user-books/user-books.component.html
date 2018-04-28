@@ -1,3 +1,8 @@
+<div class="user_books-header">
+  <h1>My Books</h1>
+  <app-add-book-modal></app-add-book-modal>
+</div>
+<hr class="my-4">
 <div class="card-deck">
   <div class="card" *ngFor="let book of books">
     <img class="card-img-top" src="{{ book.image }}" alt="Card image cap" />
