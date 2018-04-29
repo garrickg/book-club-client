@@ -1,8 +1,10 @@
+import { Router } from '@angular/router';
+import { AuthService } from './../auth/auth.service';
 import { Book } from './../shared/book.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs/Subscription';
-import { allBooksQuery, requestBookMutation } from '../shared/graphql';
+import { allBooksQuery, requestBookMutation, userAndRequestsQuery } from '../shared/graphql';
 import {debounceTime} from 'rxjs/operator/debounceTime';
 import {Subject} from 'rxjs/Subject';
 
@@ -18,16 +20,19 @@ export class BooksComponent implements OnInit, OnDestroy {
   loading: boolean;
   books: Book[] = [];
   numBooks: number;
-  pageSize = 50;
+  pageSize = 25;
   currentPage = 1;
   booksToDisplay: Book[];
   successMessage: string;
+  isAuthenticated: boolean;
 
   private querySubscription: Subscription;
 
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
+
+    this.isAuthenticated = this.authService.isAuthenticated();
     
     this._success.subscribe((message) => this.successMessage = message);
     debounceTime.call(this._success, 5000).subscribe(() => this.successMessage = null);
@@ -53,16 +58,26 @@ export class BooksComponent implements OnInit, OnDestroy {
     }
   }
 
-  onRequest(book: Book) { // TODO: add follow-up query to refresh store
+  onRequest(book: Book) {
+
+    if (!this.isAuthenticated) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.apollo.mutate({
       mutation: requestBookMutation,
       variables: {
         id: book.id,
-      }
+      },
+      refetchQueries: [{
+        query: allBooksQuery
+      }, {
+        query: userAndRequestsQuery
+      }]
     }).subscribe(({ data }) => {
       const { ok } = data.requestBook;
       if (ok) {
-        console.log(book.id);
         this._success.next(`${book.title} requested.  Check your requests for updates.`);
       }}, (error) => {
         console.log('there was an error requesting the book', error);

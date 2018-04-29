@@ -33,3 +33,9 @@
   .card:hover .overlay {
     opacity: 1;
   }
+
+  ngb-alert {
+    position: fixed;
+    bottom: 0px;
+    right: 20px;
+  }

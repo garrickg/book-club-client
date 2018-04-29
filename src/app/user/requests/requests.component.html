@@ -4,24 +4,41 @@
       <ng-template ngbTabContent>
         <hr>
           <ul class="list-group">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Morbi leo risus</li>
-              <li class="list-group-item">Porta ac consectetur ac</li>
-              <li class="list-group-item">Vestibulum at eros</li>
+              <li class="list-group-item" *ngFor="let request of myRequests">
+                <div class="d-flex w-100 justify-content-between">
+                  <div>
+                    <h5 class="mb-1">{{ request.book.title }}</h5>
+                    <small>by {{ request.book.author }}</small>
+                  </div>
+                  <button type="button" class="btn btn-outline-danger" (click)="onCancelRequest(request.id)">Cancel Request</button>
+                </div>
+              </li>
             </ul>
+            <div class="alert alert-info" role="alert" *ngIf="myRequests.length === 0">
+                You don't have any active requests.
+            </div>
       </ng-template>
     </ngb-tab>
     <ngb-tab title="Requests for Me">
       <ng-template ngbTabContent>
         <hr>
           <ul class="list-group">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Morbi leo risus</li>
-              <li class="list-group-item">Porta ac consectetur ac</li>
-              <li class="list-group-item">Vestibulum at eros</li>
+            <li class="list-group-item" *ngFor="let request of requestsForMe">
+              <div class="d-flex w-100 justify-content-between">
+                  <div>
+                    <h5 class="mb-1">{{ request.book.title }}</h5>
+                    <small>Requested by {{ request.requester.username }}</small>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-success" (click)="onApproveRequest(request.id)">Approve Request</button>
+                    <button type="button" class="btn btn-outline-danger" (click)="onCancelRequest(request.id)">Cancel Request</button>
+                  </div>
+                </div>
+            </li>
             </ul>
+            <div class="alert alert-info" role="alert" *ngIf="requestsForMe.length === 0">
+                Nobody has requested any of your books.
+            </div>
       </ng-template>
     </ngb-tab>
   </ngb-tabset>

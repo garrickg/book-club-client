@@ -124,3 +124,11 @@ query {
   }
 }
 `;
+
+export const removeRequestMutation = gql`
+  mutation ($id: String!) {
+    returnBook(id: $id) {
+      ok
+    }
+  }
+`;

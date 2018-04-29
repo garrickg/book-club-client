@@ -1,4 +1,4 @@
-import { userAndRequestsQuery } from './../../shared/graphql';
+import { userAndRequestsQuery, removeRequestMutation, allBooksQuery } from './../../shared/graphql';
 import { Apollo } from 'apollo-angular';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
@@ -10,7 +10,8 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class RequestsComponent implements OnInit, OnDestroy {
   loading: boolean;
-  userRequestData: any;
+  myRequests = [];
+  requestsForMe = [];
 
   private querySubscription: Subscription;
 
@@ -23,9 +24,34 @@ export class RequestsComponent implements OnInit, OnDestroy {
       .valueChanges
       .subscribe(({ data, loading }) => {
         this.loading = loading;
-        this.userRequestData = data.me;
-        console.log(this.userRequestData);
+        const { myRequests, requestsForMe } = data.me;
+        this.myRequests = myRequests.filter(request => {
+          return request.active;
+        });
+        this.requestsForMe = requestsForMe.filter(request => {
+          return request.active;
+        });
       });
+  }
+
+  onCancelRequest(id: string) {
+    this.apollo.mutate({
+      mutation: removeRequestMutation,
+      variables: {
+        id,
+      },
+      refetchQueries: [{
+        query: userAndRequestsQuery
+      }, {
+        query: allBooksQuery
+      }]
+    }).subscribe(() => {},(error) => {
+      console.log('there was an error sending the query', error);
+    });
+  }
+
+  onApproveRequest(id: string) {
+    console.log('approved!')
   }
   
   ngOnDestroy() {

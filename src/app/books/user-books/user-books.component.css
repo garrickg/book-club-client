@@ -1,5 +1,6 @@
 .bookshelf {
     margin-top: 20px;
+    margin-bottom: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
     grid-gap: 20px;
