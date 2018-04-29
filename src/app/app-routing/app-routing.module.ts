@@ -8,6 +8,7 @@ import { RegisterComponent } from '../auth/register/register.component';
 import { LoginComponent } from '../auth/login/login.component';
 import { BooksComponent } from '../books/books.component';
 import { UserComponent } from '../user/user.component';
+import { RequestsComponent } from '../user/requests/requests.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +17,8 @@ const appRoutes: Routes = [
   { path: 'books', component: BooksComponent},
   { path: 'user', component: UserComponent},
   { path: 'user/books', component: UserBooksComponent},
+  { path: 'user/requests', component: RequestsComponent},
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

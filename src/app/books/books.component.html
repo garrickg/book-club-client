@@ -1,6 +1,10 @@
 <div class="bookshelf">
-  <div class="card" *ngFor="let book of booksToDisplay">
+  <div class="card" *ngFor="let book of booksToDisplay; let i = index">
     <img class="card-img-top" src="{{ book.image }}" alt="Card image cap" />
+    <div class="overlay">
+      <button class="btn" (click)="onRequest(book)" [class.btn-primary]="!book.requested" [class.btn-warning]="book.requested" [disabled]="book.requested">{{ book.requested ? "Reserved" : "Request Book" }}</button>
+    </div>
   </div>
 </div>
-<ngb-pagination [collectionSize]="numBooks" [pageSize]="pageSize" [(page)]="page" size="lg" class="d-flex justify-content-center" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="loadBooks($event)"></ngb-pagination>
+<ngb-pagination [collectionSize]="numBooks" [pageSize]="pageSize" [(page)]="currentPage" size="lg" class="d-flex justify-content-center" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="loadBooks($event)"></ngb-pagination>
+<ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>

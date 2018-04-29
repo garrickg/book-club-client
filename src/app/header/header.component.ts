@@ -10,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   user: User;
+  isAuthenticated: boolean;
 
   constructor(private authService: AuthService) { }
 
@@ -19,11 +20,13 @@ export class HeaderComponent implements OnInit {
         this.user = user;
       });
     this.authService.emitUser(null);
+    this.isAuthenticated = this.authService.isAuthenticated();
   }
 
   onLogout() {
     this.authService.logout();
     this.user = null;
+    this.isAuthenticated = this.authService.isAuthenticated();
   }
 
 }

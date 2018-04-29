@@ -24,6 +24,7 @@ export const allBooksQuery = gql`
       title
       id
       image
+      requested
     }
   }
 `;
@@ -81,4 +82,45 @@ export const updateUserMutation = gql`
       ok
     }
   }
+`;
+
+export const requestBookMutation = gql`
+  mutation ($id: String!) {
+    requestBook(id: $id) {
+      ok
+    }
+  }
+`;
+
+export const userAndRequestsQuery = gql`
+query {
+  me {
+    myRequests {
+      id
+      active
+      approved
+      book {
+        id
+        title
+        author
+        image
+      }
+    }
+    requestsForMe {
+      id
+      active
+      approved
+      requester {
+        id
+        username
+      }
+      book {
+        id
+        title
+        author
+        image
+      }
+    }
+  }
+}
 `;

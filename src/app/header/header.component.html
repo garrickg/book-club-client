@@ -11,9 +11,12 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/user/books" routerLinkActive="active" *ngIf="user">My Books</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/user/requests" routerLinkActive="active" *ngIf="user">My Requests</a>
+      </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-        <ng-template [ngIf]="!authService.isAuthenticated()">
+        <ng-template [ngIf]="!isAuthenticated">
             <li class="nav-item"><a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a></li>
             <li class="nav-item"><a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a></li>   
         </ng-template>
@@ -24,7 +27,7 @@
             <a class="dropdown-item" style="cursor: pointer" routerLink="/user/books">My Books</a>
           </div>
         </li>
-        <li class="nav-item"><a class="nav-link" style="cursor: pointer;" (click)="onLogout()" *ngIf="authService.isAuthenticated()">Logout</a></li>
+        <li class="nav-item"><a class="nav-link" style="cursor: pointer;" (click)="onLogout()" *ngIf="isAuthenticated">Logout</a></li>
     </ul>    
   </div>
 </nav>
