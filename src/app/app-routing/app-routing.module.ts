@@ -7,12 +7,14 @@ import { HomeComponent } from './../home/home.component';
 import { RegisterComponent } from '../auth/register/register.component';
 import { LoginComponent } from '../auth/login/login.component';
 import { BooksComponent } from '../books/books.component';
+import { UserComponent } from '../user/user.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'books', component: BooksComponent},
+  { path: 'user', component: UserComponent},
   { path: 'user/books', component: UserBooksComponent},
 ];
 

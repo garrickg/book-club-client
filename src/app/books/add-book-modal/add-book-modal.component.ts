@@ -1,5 +1,6 @@
+import { User } from './../../shared/user.model';
 import { BookService } from './../book.service';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { NgForm } from '@angular/forms/src/directives/ng_form';
@@ -12,6 +13,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./add-book-modal.component.css']
 })
 export class AddBookModalComponent {
+  @Input() user: User;
   closeResult: string;
   private booksAPIUrl = 'https://www.googleapis.com/books/v1/volumes';
   private APIKey = 'AIzaSyDxZxGgriylWz3H02HfwFeVfFnGGkISvBc';
@@ -48,7 +50,7 @@ export class AddBookModalComponent {
       .map((res: Response) => res.json())
       .subscribe(data => {
         const booksWithAuthors = data.items.filter(book => {
-          return book.volumeInfo.authors;
+          return book.volumeInfo.authors && book.volumeInfo.imageLinks;
         })
         this.bookSearchResults = booksWithAuthors;
         this.searchComplete = true;
@@ -61,7 +63,7 @@ export class AddBookModalComponent {
   }
 
   async onSubmit () {
-    await this.bookService.addBook(this.selectedBook);
+    await this.bookService.addBook(this.selectedBook, this.user);
     this.reset();
   }
 

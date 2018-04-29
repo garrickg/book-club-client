@@ -1,13 +1,13 @@
 <div class="user_books-header">
   <h1>My Books</h1>
-  <app-add-book-modal></app-add-book-modal>
+  <app-add-book-modal [user]="user"></app-add-book-modal>
 </div>
 <hr class="my-4">
-<div class="card-deck">
-  <div class="card" *ngFor="let book of books">
+<div class="bookshelf" *ngIf="!loading">
+  <div class="card" *ngFor="let book of booksToDisplay">
     <img class="card-img-top" src="{{ book.image }}" alt="Card image cap" />
-    <div class="card-body">
-      <h5 class="card-title">{{ book.title }}</h5>
-    </div>
   </div>
+</div>
+<div class="alert alert-info" role="alert" *ngIf="books.length === 0">
+  You don't have any saved books.  Click the button above to add your first book!
 </div>

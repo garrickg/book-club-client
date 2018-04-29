@@ -19,8 +19,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Cancel</button>
-    <button type="button" class="btn btn-outline-success" (click)="onSubmit()" [disabled]="!selectedBook">Add Book</button>
+    <button type="button" class="btn btn-outline-success" (click)="onSubmit(); f.reset()" [disabled]="!selectedBook">Add Book</button>
   </div>
-</ng-template>
-  
+</ng-template>  
 <button class="btn btn-primary" (click)="open(content)">Add New Book</button>

@@ -17,6 +17,7 @@ import { HomeComponent } from './home/home.component';
 import { UserBooksComponent } from './books/user-books/user-books.component';
 import { AddBookModalComponent } from './books/add-book-modal/add-book-modal.component';
 import { BookService } from './books/book.service';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { BookService } from './books/book.service';
     HomeComponent,
     UserBooksComponent,
     AddBookModalComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,

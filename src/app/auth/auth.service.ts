@@ -2,45 +2,10 @@ import { User } from './../shared/user.model';
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
 import * as decode from 'jwt-decode';
 import { Subject } from 'rxjs/Subject';
+import { registerMutation, loginMutation } from '../shared/graphql';
 
-const registerMutation = gql`
-  mutation ($username: String!, $email: String!, $password: String!) {
-    register(username: $username, email: $email, password: $password) {
-      ok
-      errors {
-        path
-        message
-      }
-      token
-      refreshToken
-      user {
-        username
-        id
-      }
-    }
-  }
-`;
-
-const loginMutation = gql`
-  mutation ($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      ok
-      errors {
-        path
-        message
-      }
-      token
-      refreshToken
-      user {
-        username
-        id
-      }
-    }
-  }
-`;
 
 @Injectable()
 export class AuthService {

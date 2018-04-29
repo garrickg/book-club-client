@@ -1,8 +1,6 @@
-<div class="card-deck">
-  <div class="card" *ngFor="let book of books">
+<div class="bookshelf">
+  <div class="card" *ngFor="let book of booksToDisplay">
     <img class="card-img-top" src="{{ book.image }}" alt="Card image cap" />
-    <div class="card-body">
-      <h5 class="card-title">{{ book.title }}</h5>
-    </div>
   </div>
 </div>
+<ngb-pagination [collectionSize]="numBooks" [pageSize]="pageSize" [(page)]="page" size="lg" class="d-flex justify-content-center" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="loadBooks($event)"></ngb-pagination>
