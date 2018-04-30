@@ -6,6 +6,9 @@
 <div class="bookshelf">
   <div class="card" *ngFor="let book of booksToDisplay">
     <img class="card-img-top" src="{{ book.image }}" alt="Card image cap" />
+    <div class="overlay">
+      <button class="btn" (click)="onRemove(book)" [class.btn-warning]="book.requested" [class.btn-danger]="!book.requested" [disabled]="book.requested">{{ book.requested ? "Borrowed" : "Remove Book" }}</button>
+    </div>
   </div>
 </div>
 <div class="alert alert-info" role="alert" *ngIf="books.length === 0">

@@ -63,7 +63,7 @@ export class AddBookModalComponent {
   }
 
   async onSubmit () {
-    await this.bookService.addBook(this.selectedBook, this.user);
+    await this.bookService.addBook(this.selectedBook);
     this.reset();
   }
 

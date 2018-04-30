@@ -1,8 +1,8 @@
 <div class="container">
-  <ngb-tabset type="pills">
-    <ngb-tab title="My Requests">
+  <ngb-tabset>
+    <ngb-tab>
+      <ng-template ngbTabTitle>My Requests <span class="badge badge-primary" *ngIf="myRequests.length > 0">{{ myRequests.length }}</span></ng-template>
       <ng-template ngbTabContent>
-        <hr>
           <ul class="list-group">
               <li class="list-group-item" *ngFor="let request of myRequests">
                 <div class="d-flex w-100 justify-content-between">
@@ -10,7 +10,10 @@
                     <h5 class="mb-1">{{ request.book.title }}</h5>
                     <small>by {{ request.book.author }}</small>
                   </div>
-                  <button type="button" class="btn btn-outline-danger" (click)="onCancelRequest(request.id)">Cancel Request</button>
+                  <button type="button" class="btn btn-outline-danger" (click)="onCancelRequest(request.id)" *ngIf="!request.approved">Cancel Request</button>
+                  <div class="btn-group" *ngIf="request.approved">
+                    <button type="button" class="btn btn-outline-success" disabled>Request Approved</button>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -19,9 +22,9 @@
             </div>
       </ng-template>
     </ngb-tab>
-    <ngb-tab title="Requests for Me">
+    <ngb-tab>
+      <ng-template ngbTabTitle>Requests For Me <span class="badge badge-primary" *ngIf="requestsForMe.length > 0">{{ requestsForMe.length }}</span></ng-template>
       <ng-template ngbTabContent>
-        <hr>
           <ul class="list-group">
             <li class="list-group-item" *ngFor="let request of requestsForMe">
               <div class="d-flex w-100 justify-content-between">
@@ -29,9 +32,13 @@
                     <h5 class="mb-1">{{ request.book.title }}</h5>
                     <small>Requested by {{ request.requester.username }}</small>
                   </div>
-                  <div class="btn-group" role="group">
+                  <div class="btn-group" role="group" *ngIf="!request.approved">
                     <button type="button" class="btn btn-outline-success" (click)="onApproveRequest(request.id)">Approve Request</button>
                     <button type="button" class="btn btn-outline-danger" (click)="onCancelRequest(request.id)">Cancel Request</button>
+                  </div>
+                  <div class="btn-group" role="group" *ngIf="request.approved">
+                    <button type="button" class="btn btn-outline-success" disabled>Request Approved</button>
+                    <button type="button" class="btn btn-outline-primary" (click)="onCancelRequest(request.id)">Book Returned</button>
                   </div>
                 </div>
             </li>

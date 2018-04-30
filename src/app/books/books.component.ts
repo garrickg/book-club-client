@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { allBooksQuery, requestBookMutation, userAndRequestsQuery } from '../shared/graphql';
 import {debounceTime} from 'rxjs/operator/debounceTime';
 import {Subject} from 'rxjs/Subject';
+import { User } from '../shared/user.model';
 
 @Component({
   selector: 'app-books',
@@ -25,6 +26,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   booksToDisplay: Book[];
   successMessage: string;
   isAuthenticated: boolean;
+  user: User;
 
   private querySubscription: Subscription;
 
@@ -33,6 +35,12 @@ export class BooksComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.isAuthenticated = this.authService.isAuthenticated();
+
+    this.authService.getUserObservable()
+      .subscribe(user => {
+        this.user = user;
+      });
+    this.authService.emitUser(null);
     
     this._success.subscribe((message) => this.successMessage = message);
     debounceTime.call(this._success, 5000).subscribe(() => this.successMessage = null);

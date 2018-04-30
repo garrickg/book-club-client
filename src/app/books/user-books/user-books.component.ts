@@ -1,6 +1,6 @@
+import { BookService } from './../book.service';
 import { myBooksQuery } from './../../shared/graphql';
 import { User } from './../../shared/user.model';
-import { AuthService } from './../../auth/auth.service';
 import { Book } from '../../shared/book.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Apollo } from 'apollo-angular';
@@ -23,19 +23,11 @@ export class UserBooksComponent implements OnInit, OnDestroy {
 
   private querySubscription: Subscription;
 
-  constructor(private apollo: Apollo, private authService: AuthService) { }
+  constructor(private apollo: Apollo,private bookService: BookService) { }
 
   ngOnInit() {
-    this.authService.getUserObservable()
-      .subscribe(user => {
-        this.user = user;
-      });      
-    this.authService.emitUser(null);
     this.querySubscription = this.apollo.watchQuery<any>({
       query: myBooksQuery,
-      variables: {
-        userId: this.user.id,
-      },
     })
       .valueChanges
       .subscribe(({ data, loading }) => {
@@ -53,6 +45,11 @@ export class UserBooksComponent implements OnInit, OnDestroy {
     } else {
       this.booksToDisplay = this.books.slice((this.currentPage-1)*this.pageSize, this.currentPage*this.pageSize);
     }
+  }
+
+  onRemove(book: Book) {
+    this.bookService.removeBook(book);
+    this.loadBooks(this.currentPage);
   }
   
   ngOnDestroy() {

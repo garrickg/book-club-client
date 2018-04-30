@@ -1,4 +1,4 @@
-import { userAndRequestsQuery, removeRequestMutation, allBooksQuery } from './../../shared/graphql';
+import { userAndRequestsQuery, removeRequestMutation, allBooksQuery, approveRequestMutation } from './../../shared/graphql';
 import { Apollo } from 'apollo-angular';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
@@ -51,7 +51,17 @@ export class RequestsComponent implements OnInit, OnDestroy {
   }
 
   onApproveRequest(id: string) {
-    console.log('approved!')
+    this.apollo.mutate({
+      mutation: approveRequestMutation,
+      variables: {
+        id,
+      },
+      refetchQueries: [{
+        query: userAndRequestsQuery
+      }]
+    }).subscribe(() => {},(error) => {
+      console.log('there was an error sending the query', error);
+    });
   }
   
   ngOnDestroy() {

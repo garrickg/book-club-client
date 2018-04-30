@@ -1,8 +1,8 @@
 <div class="bookshelf">
-  <div class="card" *ngFor="let book of booksToDisplay; let i = index">
+  <div class="card" *ngFor="let book of booksToDisplay">
     <img class="card-img-top" src="{{ book.image }}" alt="Card image cap" />
     <div class="overlay">
-      <button class="btn" (click)="onRequest(book)" [class.btn-primary]="!book.requested" [class.btn-warning]="book.requested" [disabled]="book.requested">{{ book.requested ? "Reserved" : "Request Book" }}</button>
+      <button class="btn" (click)="onRequest(book)" [class.btn-primary]="!book.requested && book.owner.id !== user.id" [class.btn-warning]="book.requested && book.owner.id !== user.id" [class.btn-success]="book.owner.id === user.id" [disabled]="book.requested || book.owner.id === user.id">{{ book.owner.id === user.id ? "Owned" : book.requested ? "Reserved" : "Request Book" }}</button>
     </div>
   </div>
 </div>

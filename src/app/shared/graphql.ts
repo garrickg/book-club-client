@@ -9,11 +9,12 @@ export const addBookMutation = gql`
 `;
 
 export const myBooksQuery = gql`
-  query ($userId: String!) {
-    myBooks(userId: $userId) {
+  query {
+    myBooks {
       title
       id
       image
+      requested
     }
   }
 `;
@@ -25,6 +26,9 @@ export const allBooksQuery = gql`
       id
       image
       requested
+      owner {
+        id
+      }
     }
   }
 `;
@@ -128,6 +132,22 @@ query {
 export const removeRequestMutation = gql`
   mutation ($id: String!) {
     returnBook(id: $id) {
+      ok
+    }
+  }
+`;
+
+export const approveRequestMutation = gql`
+  mutation ($id: String!) {
+    approveRequest(id: $id) {
+      ok
+    }
+  }
+`;
+
+export const removeBookMutation = gql`
+  mutation ($id: String!) {
+    removeBook(id: $id) {
       ok
     }
   }
