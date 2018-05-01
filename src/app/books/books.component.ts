@@ -26,7 +26,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   booksToDisplay: Book[];
   successMessage: string;
   isAuthenticated: boolean;
-  user: User;
+  user = new User("","","","");
 
   private querySubscription: Subscription;
 
@@ -36,12 +36,14 @@ export class BooksComponent implements OnInit, OnDestroy {
 
     this.isAuthenticated = this.authService.isAuthenticated();
 
-    this.authService.getUserObservable()
-      .subscribe(user => {
-        this.user = user;
-      });
-    this.authService.emitUser(null);
-    
+    if (this.isAuthenticated) {
+      this.authService.getUserObservable()
+        .subscribe(user => {
+          this.user = user;
+        });
+      this.authService.emitUser(null);
+    }
+
     this._success.subscribe((message) => this.successMessage = message);
     debounceTime.call(this._success, 5000).subscribe(() => this.successMessage = null);
 
