@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {Apollo, ApolloModule} from 'apollo-angular';
@@ -16,7 +17,7 @@ import { ApolloLink, from, split } from 'apollo-link';
 export class GraphQLModule {
   constructor(apollo: Apollo, httpLink: HttpLink) {
 
-  const uri = 'http://localhost:8080/graphql';
+  const uri = `${environment.NG_APP_SERVER_URL}/graphql`;
   const http = httpLink.create({ uri });
 
   const middlewareLink = setContext(() => ({

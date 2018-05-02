@@ -13,7 +13,7 @@ import { NgForm } from '@angular/forms';
 })
 export class UserComponent implements OnInit {
   loading: boolean;
-  user: User;
+  user = new User("","","","");
 
   private querySubscription: Subscription;
 

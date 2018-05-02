@@ -15,7 +15,6 @@ export class UserBooksComponent implements OnInit, OnDestroy {
 
   loading: boolean;
   books: Book[] = [];
-  user: User;
   numBooks: number;
   pageSize = 25;
   currentPage = 1;

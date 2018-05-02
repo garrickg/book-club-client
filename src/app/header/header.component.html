@@ -1,33 +1,33 @@
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
     <a routerLink="/" class="navbar-brand">Book Club</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" (click)="toggleCollapsed()" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>  
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" routerLink="/books" routerLinkActive="active">All Books</a>
+        <a class="nav-link" routerLink="/books" routerLinkActive="active" (click)="toggleCollapsed()">All Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/user/books" routerLinkActive="active" *ngIf="user">My Books</a>
+        <a class="nav-link" routerLink="/user/books" routerLinkActive="active" *ngIf="user.username !== ''" (click)="toggleCollapsed()">My Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/user/requests" routerLinkActive="active" *ngIf="user">My Requests</a>
+        <a class="nav-link" routerLink="/user/requests" routerLinkActive="active" *ngIf="user.username !== ''" (click)="toggleCollapsed()">My Requests</a>
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-        <ng-template [ngIf]="!user">
-            <li class="nav-item"><a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a></li>   
+        <ng-template [ngIf]="user.username === ''">
+            <li class="nav-item"><a class="nav-link" routerLink="/register" routerLinkActive="active" (click)="toggleCollapsed()">Register</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/login" routerLinkActive="active" (click)="toggleCollapsed()">Login</a></li>   
         </ng-template>
-        <li class="nav-item" ngbDropdown *ngIf="user">
+        <li class="nav-item" ngbDropdown *ngIf="user.username !== ''">
           <a class="nav-link" ngbDropdownToggle role="button" style="cursor: pointer">{{ user.username }} <span class="caret"></span></a>
           <div ngbDropdownMenu aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" style="cursor: pointer" routerLink="/user">My Info</a>
-            <a class="dropdown-item" style="cursor: pointer" routerLink="/user/books">My Books</a>
+            <a class="dropdown-item" style="cursor: pointer" routerLink="/user" (click)="toggleCollapsed()">My Info</a>
+            <a class="dropdown-item" style="cursor: pointer" routerLink="/user/books" (click)="toggleCollapsed()">My Books</a>
           </div>
         </li>
-        <li class="nav-item"><a class="nav-link" style="cursor: pointer;" (click)="onLogout()" *ngIf="user">Logout</a></li>
+        <li class="nav-item"><a class="nav-link" style="cursor: pointer;" (click)="onLogout()" *ngIf="user.username !== ''" (click)="toggleCollapsed()">Logout</a></li>
     </ul>    
   </div>
 </nav>

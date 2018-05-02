@@ -9,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  user: User;
+  user = new User("","","","");
+  isNavbarCollapsed = true;
 
   constructor(private authService: AuthService) { }
 
@@ -19,6 +20,10 @@ export class HeaderComponent implements OnInit {
         this.user = user;
       });
     this.authService.emitUser(null);
+  }
+
+  toggleCollapsed() {
+    this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
 
   onLogout() {
