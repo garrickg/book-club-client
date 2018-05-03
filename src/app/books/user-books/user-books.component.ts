@@ -15,8 +15,9 @@ export class UserBooksComponent implements OnInit, OnDestroy {
 
   loading: boolean;
   books: Book[] = [];
-  numBooks: number;
-  pageSize = 25;
+  numBooks = 0;
+  pageNums: number[] = [];
+  pageSize = 18;
   currentPage = 1;
   booksToDisplay: Book[];
 
@@ -30,10 +31,15 @@ export class UserBooksComponent implements OnInit, OnDestroy {
     })
       .valueChanges
       .subscribe(({ data, loading }) => {
+        this.pageNums = [];
+        this.booksToDisplay = [];
         this.loading = loading;
         this.books = [...data.myBooks];
-        this.booksToDisplay = this.books.slice((1-this.currentPage)*this.pageSize, this.currentPage*this.pageSize-1);
         this.numBooks = this.books.length;
+        for (let i = 1; i <= Math.ceil(this.numBooks/this.pageSize); i++) {
+          this.pageNums.push(i);
+        }
+        this.loadBooks(this.currentPage);
       });
   }
 
